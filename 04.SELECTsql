@@ -1,0 +1,55 @@
+--***CH04_1 실습용 테이블 살펴보기***
+
+--EX.04-1 EMP 테이블 살펴보기
+DESC EMP;    
+--EX.04-2 DEPT 테이블 구성 살펴보기
+DESC DEPT;
+--EX.04-3 SALGRADE 테이블 구성 살펴보기
+    DESC SALGRADE;
+
+--***CH04_2 SQL의 기본 뼈대, SELECT절과 FROM절***
+
+--EX.04-4 EMP 테이블 전체 열 조회하기
+SELECT * FROM EMP; //*:전체 열 조회
+--EX04-5 열을 쉼표로 구분하여 출력하기
+SELECT EMPNO, ENAME, DEPTNO
+FROM EMP;
+
+--***CH04_3 중복데이터를 삭제하는 DISTINCT***
+
+--EX.04-6 DISTINCT로 열의 중복 제거하기
+SELECT DISTINCT DEPTNO
+FROM EMP;
+--EX.04-7 여러 개 열을 명시하여 중복 제거하기
+SELECT DISTINCT job, deptno
+FROM EMP;
+--Ex.04-8 직책, 부서 번호 출력하기 (ALL사용)
+SELECT ALL job, deptno
+FROM EMP;
+
+--***CH04_4 한눈에 보기 좋게 별칭 설정하기(AS)***
+
+--EX.04-9 열에 연산식을 사용하여 출력하기
+SELECT ENAME, SAL, SAL*12+COMM, COMM
+FROM EMP;
+--EX.04-10 별칭을 사용하여 사원의 연간 총 수입 출력하기
+SELECT ENAME, SAL, SAL*12+COMM AS ANNSAL, COMM
+FROM EMP;
+
+--***CH_06 원하는 순서로 출력 데이터를 정렬하는 ORDER BY***
+
+--EX.04-12 EMP 테이블의 모든 열을 급여 기준으로 오름차순 정렬하기
+SELECT *
+FROM EMP
+ORDER BY SAL;
+--EX.04-13 EMP 테이블의 모든 열을 급여 기준으로 내림차순 정렬하기
+SELECT *
+FROM EMP
+ORDER BY SAL DESC;
+--EX.04-14 EMP 테이블의 전체 열을 부서 번호(오름차순)와 급여(내림차순)로 정렬하기
+SELECT *
+FROM EMP
+ORDER BY DEPTNO ASC, SAL DESC;
+
+
+
