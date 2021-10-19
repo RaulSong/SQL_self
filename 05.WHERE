@@ -1,0 +1,278 @@
+--***CH05.1 필요한 데이터만 출력하는 WHERE절--
+
+--EX05.2 부서번호가 30인 데이터만 출력하기
+SELECT
+    *
+FROM employees
+WHERE department_id = 30;
+
+--***CH05.2 여러 개 조건식을 사용하는 AND, OR 연산자--
+
+--EX05.3 AND 연산자로 여러 개의 조건식 사용하기
+SELECT
+    *
+FROM employees
+WHERE department_id = 30
+AND job_id = 'PU_CLERK';
+
+--EX05.4 OR 연산자로 여러 개의 출력 조건 사용하기
+SELECT
+    *
+FROM employees
+WHERE department_id = 30
+OR job_id = 'PU_CLERK';
+
+--***CH05.3 연산자 종류와 활용 방법 알아보기***
+ 
+--EX05.5 곱셈 산술 연산자 활용
+SELECT
+    *
+FROM employees
+WHERE salary * 12 = 36000;
+
+--EX05.6 대소 비교 연산자를 사용하여 출력
+SELECT
+    *
+FROM employees
+WHERE salary >= 3000;
+
+--EX05.7 문자를 대소 비교 연산자로 비교하기(비교 문자열이 하나일떄)
+SELECT
+    *
+FROM employees
+WHERE last_name >= 'F'; --사원 이름의 첫 문자가 F와 같거나 뒤쪽인 것만 검색
+
+--EX05.8 문자열을 대소 비교 연산자로 비교하기(비교 문자열이 여러 개일 때)
+SELECT
+    *
+FROM employees
+WHERE first_name <= 'FORZ';
+
+--EX05.9 등가 비교연산자(!=)를 사용하여 출력
+SELECT
+    *
+FROM employees
+WHERE salary != 3000;
+
+--EX05.10 등가 비교연산자(<>)를 사용하여 출력
+SELECT
+    *
+FROM employees
+WHERE salary <> 3000;
+
+--EX05.11 등가 비교연산자(^=)를 사용하여 출력
+SELECT
+    *
+FROM employees
+WHERE salary ^= 3000;
+
+--EX05.12 NOT 연산자를 사용하여 출력
+SELECT
+    *
+FROM employees
+WHERE NOT salary = 3000;
+
+--EX05.13 OR연산자를 사용하여 여러 개 조건을 만족하는 데이터 출력
+SELECT
+    *
+FROM employees
+WHERE job_id = 'IT_PROG'
+OR job_id = 'AD_VP'
+OR job_ID = 'ST_MAN';
+
+--EX05.14 IN 연산자를 사용하여 출력하기
+SELECT
+    *
+FROM employees
+WHERE job_id IN ('IT_PROG', 'AD_VP', 'ST_MAN');
+
+--EX05.15 등가 비교 연산자와 AND 연산자를 사용하여 출력
+SELECT
+    *
+FROM employees
+WHERE job_id != 'IT_PROG'
+AND job_id <> 'AD_VP'
+AND job_id ^= 'ST_MAN';
+
+--EX05.16 IN 연산자와 논리 부정 연산자를 사용하여 출력
+SELECT
+    *
+FROM employees
+WHERE job_id NOT IN ('IT_PROG', 'AD_VP', 'ST_MAN');
+
+--EX05.17 대소 비교 연산자와 AND 연산자를 사용하여 출력
+SELECT
+    *
+FROM employees
+WHERE salary >= 2000
+AND salary <= 3000;
+
+--EX05.18 BETWEEN A AND B 연산자를 사용하여 출력
+SELECT
+    *
+FROM employees
+WHERE salary BETWEEN 2000 AND 3000;
+
+--EX05.19 BETWEEN A AND B 연산자와 NOT 연산자를 사용하여 출력
+SELECT
+    *
+FROM employees
+WHERE salary NOT BETWEEN 2000 AND 3000;
+
+--EX05.20 LIKE 연산자 사용하여 출력
+SELECT
+    *
+FROM employees
+WHERE last_name LIKE 'S%';
+--LIKE 연산자와 함께 사용할 수 있는 와일드 카드 = '_' 와 '%'
+--'_' : 어떤 값이든 상관없이 한 개의 문자 데이터를 의미
+--'%' : 길이와 상관없이(문자 없는 경우도 포함) 모든 문자 데이터를 의미
+
+--EX05.21 사원 이름의 두 번째 글자가 b인 사원만 출력
+SELECT
+    *
+FROM employees
+WHERE last_name LIKE '_b%';
+
+--EX05.22 사원 이름에 st가 포함되어 있는 사원 데이터만 출력
+SELECT
+    *
+FROM employees
+WHERE last_name LIKE '%st%';
+
+--EX05.23 사원 이름에 st가 포함되어 있지 않은 사원 데이터 출력
+SELECT
+    *
+FROM employees
+WHERE last_name NOT LIKE '%st%';
+
+--EX05.24 별칭을 사용하여 열 이름 출력
+SELECT last_name, salary, salary*12+commission_pct AS ANNSAL, commission_pct
+FROM employees;
+
+--EX05.25 등가 비교 연산자로 NULL 비교하기
+SELECT
+    *
+FROM employees
+WHERE commission_pct = NULL; --출력되지 않음
+
+--EX05.26 IS NULL 연산자를 사용하여 출력
+SELECT
+    *
+FROM employees
+WHERE commission_pct IS NULL;
+
+--EX05.27 직속 상관이 있는 사원 데이터만 출력
+SELECT
+    *
+FROM employees
+WHERE manager_id IS NOT NULL;
+
+--EX05.28 AND 연산자와 IS NULL 연산자 사용하기
+SELECT
+    *
+FROM employees
+WHERE salary > NULL
+AND commission_pct IS NULL;
+
+--EXO05.29 OR연산자와 IS NULL 연산자 사용
+SELECT
+    *
+FROM employees
+WHERE salary > NULL
+OR commission_pct IS NULL;
+
+--EX05.30 집합 연산자(UNION)를 사용하여 출력
+SELECT
+    employee_id, last_name, salary, department_id
+FROM employees
+WHERE department_id = 10
+UNION
+SELECT
+    employee_id, last_name, salary, department_id --주의 : SELECT문이 출력하려는 열 개수와 각 열의 자료혀이 순서별로 일치해야 함
+FROM employees
+WHERE department_id = 20;
+
+--EX05.31 집합연산자(UNION)를 사용하여 출력하기 (출력 열 개수가 다를 때)
+SELECT
+    employee_id, last_name, salary, department_id
+FROM employees
+WHERE department_id = 10
+UNION
+SELECT
+    employee_id, last_name, department_id
+FROM employees
+WHERE department_id = 20;           --오류 : 질의 블록은 부정확한 수의 결과 열을 가지고 있습니다.
+
+--EX05.32 집합연산자(UNION)를 사용하여 출력하기(출력 열의 자료형이 다를 때)
+SELECT
+    employee_id, last_name, salary, department_id
+FROM employees
+WHERE department_id = 10
+UNION
+SELECT
+    last_name, employee_id, department_id, salary
+FROM employees
+WHERE department_id = 20;           --오류 : 대응하는 식과 같은 데이터 유형이어야 합니다.
+
+--EX05.33 집합 연산자(UNION)를 사용하여 출력하기(출력 열 개수와 자료형이 같을 때)
+SELECT
+    employee_id, last_name, salary, department_id
+FROM employees
+WHERE department_id = 10
+UNION
+SELECT
+    employee_id, last_name, salary, department_id
+FROM employees
+WHERE department_id = 20;
+
+--EX05.34 집합 연산자(UNION)를 사용하여 출력하기(출력 결과 데이터가 같을 때)
+SELECT
+    employee_id, last_name, salary, department_id
+FROM employees
+WHERE department_id = 50
+UNION
+SELECT
+    employee_id, last_name, salary, department_id
+FROM employees
+WHERE department_id = 30;
+
+--EX05/35 집합 연산자(UNION ALL)를 사용하여 출력하기(출력 결과 데이터가 같을 때)
+SELECT
+    employee_id, last_name, salary, department_id
+FROM employees
+WHERE department_id = 30
+UNION ALL           --UNION ALL : 연결된 SELECT문의 결과 값을 합집합으로 묶어 줍니다. 중복 결과 값도 제거 없이 모두 출력
+SELECT
+    employee_id, last_name, salary, department_id
+FROM employees
+WHERE department_id = 60;
+
+--EX05.36 집합 연산자(MINUS)를 사용하여 출력하기
+SELECT
+    employee_id, last_name, salary, department_id
+FROM employees
+MINUS           --MINUS : 먼저 작성한 SELECT문의 결과 값에서 다음 SELECT문의 결과 값을 차집합 처리함. 먼저 작성한
+SELECT          --SELECT문의 결과 값 중 다음 SELECT문에 존재하지 않는 데이터만 출력
+    employee_id, last_name, salary, department_id
+FROM employees
+WHERE department_id = 30;
+
+--EX05.37 집합 연산자(INTERSECT)를 사용하여 출력
+SELECT
+    employee_id, last_name, salary, department_id
+FROM employees
+INTERSECT           --INTERSECT : 먼저 작성한 SELECT문과 다음 SELECT문의 결과 값이 같은 데이터만 출력됨.
+SELECT              --교집합과 같은 의미
+    employee_id, last_name, salary, department_id
+FROM employees
+WHERE department_id = 30;
+
+
+
+
+
+
+
+
+
