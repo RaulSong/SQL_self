@@ -114,9 +114,97 @@ SELECT
 FROM employees
 WHERE ADD_MONTHS(hire_date, 384) > SYSDATE;
 
+--EX06.27 현재와 고용일 사이 개월 수를 MONTHS_BETWEEN 함수로 출력
+SELECT
+    employee_id, last_name, hire_date,
+    TRUNC(MONTHS_BETWEEN(SYSDATE, hire_date))
+FROM employees;
 
+--EX06.28 NEXT_DAY, LAST_DAY 함수를 사용하여 출력
+SELECT
+    SYSDATE, NEXT_DAY(SYSDATE, '월요일'),  --NEXT_DAY : 특정 날짜를 기준으로 돌아오는 요일의 날짜를 출력해주는 함수
+    LAST_DAY(SYSDATE)       --LAST_DAY : 특정 날짜가 속한 달의 마지막 날짜를 출력 해주는 함수
+FROM dual;
 
+--***CH06.5 자료형을 변환하는 형 변환 함수***
 
+--EX06.31 숫자와 문져열(숫자)을 더하여 출력
+SELECT
+    employee_id, last_name, employee_id + '500'
+FROM employees
+WHERE last_name = 'King';
+
+--EX06.33 SYSDATE 날짜 형식 지정하여 출력
+SELECT
+    TO_CHAR(SYSDATE, 'YYYY/MM/DD HH24:MI:SS') 현재날짜시간
+FROM dual;
+
+--EX06.34 월과 요일을 다양한 형식으로 출력('TO_CHAR')
+SELECT
+    SYSDATE,
+    TO_CHAR(SYSDATE, 'MM') MM,          --MM : 월(2자리 숫자)
+    TO_CHAR(SYSDATE, 'MON') MON,        --MON : 월(언어별 월 이름 약자)
+    TO_CHAR(SYSDATE, 'MONTH') MONTH,    --MONTH : 월(언어별 월 이름 전체)
+    TO_CHAR(SYSDATE, 'DD') DD,          --DD : 일(2자리 숫자)
+    TO_CHAR(SYSDATE, 'DY') DY,          --DY : 요일(언어별 요일 이름 약자)
+    TO_CHAR(SYSDATE, 'Day') DAY         --DAY : 요일(언어별 요일 이름 전체)
+FROM dual;
+
+--EX06.38 여러가지 숫자 형식을 사용하여 급여 출력
+SELECT
+    salary,
+    TO_CHAR(salary, '$999,999') SAL_$,          --$ : 달러 표시를 붙여서 출력
+    TO_CHAR(salary, 'L999,999') SAL_L,          --L : 로컬 화폐 단위 기호 붙여 출력
+    TO_CHAR(salary, '999,999.00') SAL_1,        --',' : 1000단위 구분 기호 // '.' : 소수점 표시
+    TO_CHAR(salary, '000,999,999,00') SAL_2,    --0 : 빈자리를 0으로 채움
+    TO_CHAR(salary, '000999999.99') SAL_3,
+    TO_CHAR(salary, '999,999,00') SAL_4
+FROM employees;
+
+--EX06.43 2007년 6월 1일 이후에 입사한 사원 정보 출력
+SELECT
+    *
+FROM employees
+WHERE hire_date > TO_DATE('2007/06/01', 'YYYY/MM/DD');
+
+--***CH06.6 NULL 처리 함수***
+
+--EX06.45 NVL 함수를 사용하여 출력
+SELECT
+    employee_id, last_name, salary, commission_pct, salary + commission_pct,
+    NVL(commission_pct, 0),         --NVL : 첫 번째 입력 데이터가 NULL이 아니면 그 데이터를 그대로 반환하고 NULL이라면 두 번째 입력 데이터에 지정한 값을 반환
+    salary + NVL(commission_pct, 0)
+FROM employees;
+
+--EX06.46 NVL2 함수를 사용하여 출력
+SELECT
+    employee_id, last_name, salary, commission_pct, salary + commission_pct,
+    NVL2(commission_pct, '0', 'X'),         --NVL2 : NVL 함수와 비슷하지만 데이터가 NULL이 아닐 때 반환할 데이터를 추가로 지정할 수 있음         
+    NVL2(commission_pct, salary*12*commission_pct, salary*12) 연봉
+FROM employees;
+
+--***CH06.7 상황에 따라 다른 데이터를 반환하는 DECODE함수와 CASE문***
+
+--EX06.47 DECODE 함수를 사용하여 출력
+SELECT
+    employee_id, last_name, job_id, salary,
+    DECODE(job_id,
+           'IT_PROG', salary*1.1,
+           'HR_REP', salary*1.05,
+           'MK_REP', salary,
+           salary*1.03) 보너스           
+FROM employees;
+
+--EX06.48 CASE문을 사용하여 출력
+SELECT
+    employee_id, last_name, job_id, salary,
+    CASE job_id
+    WHEN 'AC_ACCOUNT' THEN salary*1.1
+    WHEN 'IT_PROG' THEN salary*1.05
+    WHEN 'SH_CLERK' THEN salary
+    ELSE salary*1.03
+    END UPSAL
+FROM employees;
 
 
 
